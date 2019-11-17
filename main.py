@@ -13,10 +13,10 @@ class ConvertService(QMainWindow):
         super().__init__()
         uic.loadUi('mainwindow.ui', self)
         self.settings_open_button.clicked.connect(self.show_settings)
+        self.settingsWindow = Settings()
 
     def show_settings(self):
-        settingsWindow = Settings()
-        settingsWindow.show()
+        self.settingsWindow.show()
 
 
 if __name__ == '__main__':
