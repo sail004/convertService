@@ -40,23 +40,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QTextEdit" name="db_way">
-      <property name="maximumSize">
-       <size>
-        <width>16777215</width>
-        <height>30</height>
-       </size>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Plain</enum>
-      </property>
-      <property name="midLineWidth">
-       <number>1</number>
-      </property>
-      <property name="acceptRichText">
-       <bool>false</bool>
-      </property>
-     </widget>
+     <widget class="QLineEdit" name="db_way"/>
     </item>
    </layout>
   </widget>
