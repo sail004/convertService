@@ -2,7 +2,9 @@ import sys
 import json
 import os.path
 from PyQt5 import uic
+from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QDialog
+
 
 
 class Settings(QDialog):
@@ -14,12 +16,15 @@ class Settings(QDialog):
         self.db_way.setText(self.settings["dbPath"])
 
     def run(self):
-        self.settings["dbPath"] = self.db_way.text()
-
-        with open("settings.json", "w") as read_file:
-            json.dump(self.settings, read_file)
-        self.close()
-
+        if (os.path.exists(self.db_way.text())):
+            self.settings["dbPath"] = self.db_way.text()
+            with open("settings.json", "w") as read_file:
+                json.dump(self.settings, read_file)
+            self.close()
+        else:
+            error_dialog = QtWidgets.QErrorMessage
+            error_dialog.showMessage('Ошибка! Нет такого файла в системе.')
+            error_dialog.exec_()
 
 class ConvertService(QMainWindow):
     def __init__(self):
