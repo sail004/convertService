@@ -1,6 +1,7 @@
 import sys
 import json
 import os.path
+import sqlite3
 from PyQt5 import uic
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QDialog
@@ -14,6 +15,7 @@ class Settings(QDialog):
         self.settings = settings
         self.pushButton.clicked.connect(self.run)
         self.db_way.setText(self.settings["dbPath"])
+    
 
     def run(self):
         if (os.path.exists(self.db_way.text())):
@@ -21,6 +23,10 @@ class Settings(QDialog):
             with open("settings.json", "w") as read_file:
                 json.dump(self.settings, read_file)
             self.close()
+            con = sqlite3.connect("script.sql")
+            cur = con = sqlite3.connect("films.db")
+            result = cur.execute(sql_request.text()).fetchall()
+            print(result)
         else:
             error_dialog = QtWidgets.QErrorMessage
             error_dialog.showMessage('Ошибка! Нет такого файла в системе.')

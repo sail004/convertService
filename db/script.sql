@@ -11,7 +11,7 @@ CREATE TABLE "Receipt_head" (
 	"Sum"	NUMERIC,
 	"DiscounCard"	TEXT,
 	"Number"	TEXT,
-	PRIMARY KEY("Id")
+	PRIMARY KEY("Id")*
 );
 CREATE TABLE "Receipt_pos" (
 	"IdCheck"	INTEGER NOT NULL,
