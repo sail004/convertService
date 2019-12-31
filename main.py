@@ -14,11 +14,7 @@ class Settings(QDialog):
         self.settings = settings
         self.pushButton.clicked.connect(self.run)
         self.db_way.setText(self.settings["dbPath"])
-<<<<<<< HEAD
-    
-=======
         self.setModal(True)
->>>>>>> 5b00ee247ba4f1a11d4b71bc0bbdb4c21212c08c
 
     def run(self):
         if (os.path.exists(self.db_way.text())):
