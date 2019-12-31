@@ -4,9 +4,8 @@ import os.path
 import sqlite3
 from PyQt5 import uic
 from PyQt5 import QtWidgets
+from PyQt5 import QtCore
 from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QDialog
-
-
 
 class Settings(QDialog):
     def __init__(self, settings):
@@ -15,7 +14,11 @@ class Settings(QDialog):
         self.settings = settings
         self.pushButton.clicked.connect(self.run)
         self.db_way.setText(self.settings["dbPath"])
+<<<<<<< HEAD
     
+=======
+        self.setModal(True)
+>>>>>>> 5b00ee247ba4f1a11d4b71bc0bbdb4c21212c08c
 
     def run(self):
         if (os.path.exists(self.db_way.text())):
@@ -29,6 +32,7 @@ class Settings(QDialog):
             print(result)
         else:
             error_dialog = QtWidgets.QErrorMessage()
+            error_dialog.setModal(True)
             error_dialog.showMessage('Ошибка! Нет такого файла в системе.')
             error_dialog.exec_()
 
