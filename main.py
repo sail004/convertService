@@ -23,12 +23,12 @@ class Settings(QDialog):
             with open("settings.json", "w") as read_file:
                 json.dump(self.settings, read_file)
             self.close()
-            con = sqlite3.connect("script.sql")
-            cur = con = sqlite3.connect("films.db")
-            result = cur.execute(sql_request.text()).fetchall()
+            con = sqlite3.connect(self.settings["dbPath"] )
+            cur = con.cursor()
+            result = cur.execute(self.sql_request.text()).fetchall()
             print(result)
         else:
-            error_dialog = QtWidgets.QErrorMessage
+            error_dialog = QtWidgets.QErrorMessage()
             error_dialog.showMessage('Ошибка! Нет такого файла в системе.')
             error_dialog.exec_()
 
