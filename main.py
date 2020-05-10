@@ -2,6 +2,7 @@ import sys
 import json
 import os.path
 import sqlite3
+import logging
 from PyQt5 import uic
 from PyQt5 import QtWidgets
 from PyQt5 import QtCore
@@ -44,6 +45,10 @@ class ConvertService(QMainWindow):
                 self.settings = json.load(read_file)
 
         self.settingsWindow = Settings(self.settings)
+        FORMAT = '%(asctime)-15s %(message)s'
+        logging.basicConfig(format=FORMAT,filename="convertService.log", level="DEBUG")
+        logger = logging.getLogger('converService')
+        logger.debug('Init')
 
     def show_settings(self):
         self.settingsWindow.show()
