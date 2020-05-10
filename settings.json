@@ -1,1 +1,1 @@
-{"dbPath": "d:\\temp\\test.db"}
+{"dbPath": "D:\\database\\blank.fdb", "request": "select * from good", "HeaderQuery": "123", "PositionQuery": "123", "UploadDirectory": "d:\\export", "ExchangePeriod": "23"}
