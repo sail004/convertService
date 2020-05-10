@@ -2,12 +2,11 @@ import sys
 import json
 import os.path
 import sqlite3
+import logging
 import constants
-from PyQt5 import uic
-from PyQt5 import QtWidgets
-from PyQt5 import QtCore
 import settings
 import xmlSaver as saver
+from PyQt5 import uic,QtWidgets,QtCore
 from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QDialog
 
 
@@ -25,6 +24,11 @@ class ConvertService(QMainWindow):
                 
         self.start_button.clicked.connect(self.save_xml)
         self.settingsWindow = settings.Settings(self.appSettings)
+        FORMAT = '%(asctime)-15s %(message)s'
+        logging.basicConfig(format=FORMAT,filename="convertService.log", level="DEBUG")
+        logger = logging.getLogger('converService')
+        logger.debug('Init')
+        
 
     def show_settings(self):
         self.settingsWindow.show()

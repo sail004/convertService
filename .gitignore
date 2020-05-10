@@ -1,0 +1,5 @@
+
+# User-specific files
+*.log
+*.json
+__pycache__/
