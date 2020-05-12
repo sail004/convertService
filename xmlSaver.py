@@ -13,15 +13,17 @@ def prettify(elem):
 
 
 class XmlSaver:
-    def __init__(self, settings):
+    def __init__(self, settings, model):
         self.settings = settings
+        self.model = model
 
     def save(self):
 
         try:
-           
-            comInfoElement = etree.Element('КоммерческаяИнформация',**{'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance'}, **{'xmlns:xsd': 'http://www.w3.org/2001/XMLSchema'}, **{"ВерсияСхемы":"2.09"}, **{"ДатаФормирования":"2015-06-26T18:28:09"}, **{"xmlns":"urn:1C.ru:commerceml_2"})
-            
+
+            comInfoElement = etree.Element('КоммерческаяИнформация', **{'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance'}, **{
+                                           'xmlns:xsd': 'http://www.w3.org/2001/XMLSchema'}, **{"ВерсияСхемы": "2.09"}, **{"ДатаФормирования": "2015-06-26T18:28:09"}, **{"xmlns": "urn:1C.ru:commerceml_2"})
+
             # comment = Comment('Generated for PyMOTW')
             # top.append(comment)
 
