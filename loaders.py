@@ -19,14 +19,16 @@ class GoodsModel:
     def __init__(self):
         self.goodGroups = [GoodGroup(1, "Корень", None), GoodGroup(
             2, "Молоко ", 1), GoodGroup(3, "Хлеб", 1)]
-        self.goods = [Good(1, "Молоко 1", "art1", "1234567890123",2), Good(
-            2, "Молоко 2", "art2", "123",2), Good(3, "Хлеб 1", "art3", "12345",3)]
+        self.goods = [Good(1, "Молоко 1", "art1", "1234567890123", 2), Good(
+            2, "Молоко 2", "art2", "123", 2), Good(3, "Хлеб 1", "art3", "12345", 3)]
 
 
 class Loader:
-    def __init__(self, settings):
+    def __init__(self, settings, logger):
         self.settings = settings
+        self.logger = logger
 
     def Load(self):
         self.__goodsModel = GoodsModel()
+        self.logger.debug("Got %s good groups" % len(self.__goodsModel.goodGroups))
         return self.__goodsModel

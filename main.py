@@ -28,18 +28,19 @@ class ConvertService(QMainWindow):
         FORMAT = '%(asctime)-15s %(message)s'
         logging.basicConfig(
             format=FORMAT, filename="convertService.log", level="DEBUG")
-        logger = logging.getLogger('converService')
-        logger.debug('Init')
+        self.logger = logging.getLogger('converService')
+        self.logger.debug('Init')
 
     def show_settings(self):
         self.settingsWindow.show()
 
     def save_xml(self):
-        dataLoader = loaders.Loader(self.appSettings)
+        self.logger.debug('Export started')
+        dataLoader = loaders.Loader(self.appSettings,self.logger)
         model = dataLoader.Load()
         xmlSaver = saver.XmlSaver(self.appSettings, model)
         xmlSaver.save()
-
+        self.logger.debug('Export finished')
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
