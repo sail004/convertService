@@ -1,1 +1,1 @@
-{"dbPath": "i:\\export\\1.xml", "request": "select * from good", "HeaderQuery": "123", "PositionQuery": "123", "UploadDirectory": "i:\\export", "ExchangePeriod": "23"}
+{"dbPath": "dsn='localhost:axioma', user='sysdba', password='masterke'", "request": "select * from good", "HeaderQuery": "123", "PositionQuery": "123", "UploadDirectory": "d:\\export", "ExchangePeriod": "23"}

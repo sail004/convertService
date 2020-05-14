@@ -25,12 +25,17 @@ class ConvertService(QMainWindow):
 
         self.start_button.clicked.connect(self.save_xml)
         self.settingsWindow = settings.Settings(self.appSettings)
+
         FORMAT = '%(asctime)-15s %(message)s'
         logging.basicConfig(
             format=FORMAT, filename="convertService.log", level="DEBUG")
-        self.logger = logging.getLogger('converService')
+        self.logger = logging.getLogger('convertService')
         self.logger.debug('Init')
-
+        handler = logging.StreamHandler(sys.stdout)
+        handler.setLevel(logging.DEBUG)
+        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        handler.setFormatter(formatter)
+        self.logger.addHandler(handler)
     def show_settings(self):
         self.settingsWindow.show()
 
@@ -38,7 +43,7 @@ class ConvertService(QMainWindow):
         self.logger.debug('Export started')
         dataLoader = loaders.Loader(self.appSettings,self.logger)
         model = dataLoader.Load()
-        xmlSaver = saver.XmlSaver(self.appSettings, model)
+        xmlSaver = saver.XmlSaver(self.appSettings, model, self.logger)
         xmlSaver.save()
         self.logger.debug('Export finished')
 

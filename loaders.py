@@ -14,8 +14,12 @@ class Good:
         self.barcode = barcode
         self.goodGroupId = goodGroupId
 
+class SamlpeGoodsModel:
+    def __init__(self, goodGroups, goods):
+        self.goodGroups = goodGroups
+        self.goods = goods
 
-class GoodsModel:
+class SamlpeGoodsModel:
     def __init__(self):
         self.goodGroups = [GoodGroup(1, "Корень", None), GoodGroup(
             2, "Молоко ", 1), GoodGroup(3, "Хлеб", 1)]
@@ -29,6 +33,17 @@ class Loader:
         self.logger = logger
 
     def Load(self):
+        self.__goodsModel = SamlpeGoodsModel()
+        self.logger.debug("Got %s good groups" % len(self.__goodsModel.goodGroups))
+        return self.__goodsModel
+
+class FbLoader:
+    def __init__(self, settings, logger):
+        self.settings = settings
+        self.logger = logger
+
+    def Load(self):
+        connection = fdb.connect(self.settings.connection_string)
         self.__goodsModel = GoodsModel()
         self.logger.debug("Got %s good groups" % len(self.__goodsModel.goodGroups))
         return self.__goodsModel

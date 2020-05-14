@@ -28,24 +28,18 @@ class Settings(QDialog):
         self.setModal(True)
 
     def run(self):
-        if (os.path.exists(self.db_way.text())):
-            self.settings[constants.dbPath] = self.db_way.text()  
-            self.settings[constants.HeaderQuery] = self.heading_request.text()
-            self.settings[constants.PositionQuery] = self.position_request.text()
-            self.settings[constants.UploadDirectory] = self.upload_directory.text()
-            self.settings[constants.ExchangePeriod] = self.exchange_period.text()
-            with open("settings.json", "w") as read_file:
-                json.dump(self.settings, read_file)
-            self.close()
-            # con = sqlite3.connect(self.settings["dbPath"] )
-            # cur = con.cursor()
-            # result = cur.execute(self.sql_request.text()).fetchall()
-            # self.settings["sql_request"] = self.sql_request.text()
-            # print(result)
-       
+
+        self.settings[constants.dbPath] = self.db_way.text()  
+        self.settings[constants.HeaderQuery] = self.heading_request.text()
+        self.settings[constants.PositionQuery] = self.position_request.text()
+        self.settings[constants.UploadDirectory] = self.upload_directory.text()
+        self.settings[constants.ExchangePeriod] = self.exchange_period.text()
+        with open("settings.json", "w") as read_file:
+            json.dump(self.settings, read_file)
+        self.close()
          
-        else:
-            error_dialog = QtWidgets.QErrorMessage()
-            error_dialog.setModal(True)
-            error_dialog.showMessage('Ошибка! Нет такого файла в системе.')
-            error_dialog.exec_()
+        # else:
+        #     error_dialog = QtWidgets.QErrorMessage()
+        #     error_dialog.setModal(True)
+        #     error_dialog.showMessage('Ошибка! Нет такого файла в системе.')
+        #     error_dialog.exec_()
