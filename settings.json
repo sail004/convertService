@@ -1,1 +1,1 @@
-{"dbPath": "c:\\db\\test.db", "request": "select * from good", "HeaderQuery": "123", "PositionQuery": "123", "UploadDirectory": "c:\\export", "ExchangePeriod": "23"}
+{"dbPath": "i:\\export\\1.xml", "request": "select * from good", "HeaderQuery": "123", "PositionQuery": "123", "UploadDirectory": "i:\\export", "ExchangePeriod": "23"}

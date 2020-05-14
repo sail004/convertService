@@ -1,9 +1,9 @@
 
 class GoodGroup:
-    def __init__(self, id, name, parentId):
+    def __init__(self, id, name, parent_id):
         self.name = name
         self.id = id
-        self.parentId = parentId
+        self.parent_id = parent_id
 
 
 class Good:
