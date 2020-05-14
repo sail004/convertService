@@ -98,7 +98,7 @@ class XmlSaver:
                 XML_FILE, encoding='utf-8', xml_declaration=True)
 
         except IOError as e:
-            print('nERROR: %sn' % e)
+            self.logger.error('%s' % e)
 
     def draw_group_node(self, parent_id, etree, groups):
         for gr in self.model.goodGroups:

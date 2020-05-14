@@ -1,3 +1,6 @@
+import fdb
+import constants
+
 
 class GoodGroup:
     def __init__(self, id, name, parent_id):
@@ -14,10 +17,12 @@ class Good:
         self.barcode = barcode
         self.goodGroupId = goodGroupId
 
-class SamlpeGoodsModel:
+
+class GoodsModel:
     def __init__(self, goodGroups, goods):
         self.goodGroups = goodGroups
         self.goods = goods
+
 
 class SamlpeGoodsModel:
     def __init__(self):
@@ -34,8 +39,10 @@ class Loader:
 
     def Load(self):
         self.__goodsModel = SamlpeGoodsModel()
-        self.logger.debug("Got %s good groups" % len(self.__goodsModel.goodGroups))
+        self.logger.debug("Got %s good groups" %
+                          len(self.__goodsModel.goodGroups))
         return self.__goodsModel
+
 
 class FbLoader:
     def __init__(self, settings, logger):
@@ -43,7 +50,23 @@ class FbLoader:
         self.logger = logger
 
     def Load(self):
-        connection = fdb.connect(self.settings.connection_string)
-        self.__goodsModel = GoodsModel()
-        self.logger.debug("Got %s good groups" % len(self.__goodsModel.goodGroups))
+        connection = fdb.connect(
+            dsn=self.settings[constants.dbPath], user='sysdba', password='masterke')
+        cur = connection.cursor()
+        cur.execute("select id,name,idparentgroup,treepath from v_goodgroups")
+        goodGroups = []
+        for record in cur.fetchall():
+            group = GoodGroup(record[0], record[1], record[2])
+            goodGroups.append(group)
+        cur.execute("select id,name,articul,idgoodgroup from v_goods")
+        goods = []
+        for record in cur.fetchall():
+            good = Good(record[0], record[1], record[2], '', record[3])
+            goods.append(good)
+
+        self.__goodsModel = GoodsModel(goodGroups, goods)
+        self.logger.debug("Got %s good groups" %
+                          len(self.__goodsModel.goodGroups))
+        self.logger.debug("Got %s goods " %
+                          len(self.__goodsModel.goods))
         return self.__goodsModel
