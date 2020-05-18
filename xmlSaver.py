@@ -113,6 +113,66 @@ class XmlSaver:
                 if self.get_nodes_count(gr.id) > 0:
                     subgroups = etree.SubElement(group, "Группы")
                     self.draw_group_node(gr.id, etree, subgroups)
+    
+    def offers(self):
+        comInfoElement = etree.Element('КоммерческаяИнформация', **{'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance'}, **{
+                                           'xmlns:xsd': 'http://www.w3.org/2001/XMLSchema'}, **{"ВерсияСхемы": "2.09"}, **{"ДатаФормирования": "2015-06-26T18:28:09"}, **{"xmlns": "urn:1C.ru:commerceml_2"})
+        classificator = etree.SubElement(comInfoElement, 'Классификатор')                                    
+        Id = etree.SubElement(classificator, "Ид")
+        name = etree.SubElement(classificator, 'Наименование')
+
+        offers_pack = etree.SubElement(comInfoElement, 'ПакетПредложений')
+        offers_pack_id = etree.SubElement(offers_pack, 'Ид')
+        offers_pack_name = etree.SubElement(offers_pack, 'Наименование')
+        catalog_id = etree.SubElement(offers_pack, 'ИдКаталога')
+        classificator_id = etree.SubElement(offers_pack, 'ИдКлассификатора')
+        offers = etree.SubElement(offers_pack, 'Предложения')
+        offer = etree.SubElement(offers, 'Предложение')
+        offer_id = etree.SubElement(offer, 'Ид')
+        version_number = etree.SubElement(offer, 'НомерВерсии')
+        delete_note = etree.SubElement(offer, 'ПометкаУдаления')
+        offer_name = etree.SubElement(offer, 'Наименование')
+        offer_value = etree.SubElement(offer, 'Значение')
+        barcode = etree.SubElement(offer, 'Штрихкод')
+        prod_charects = etree.SubElement(offer, 'ХарактеристикиТовара')
+        prod_charect = etree.SubElement(prod_charects, 'ХарактеристикаТовара')
+        prod_charect_name = etree.SubElement(prod_charect, 'Наименование')
+        prod_charect_value = etree.SubElement(prod_charect, 'Значение')
+        val_charects = etree.SubElement(offer, 'ЗначенияСвойств')
+        val_charects = etree.SubElement(val_charects, 'ЗначениеСвойств')
+        val_charects_id = etree.SubElement(val_charect, 'Ид')
+        val_charects_value = etree.SubElement(val_charect, 'Значение')
+        аccessories = etree.SubElement(offer, 'Комплектующие')
+        аccessory = etree.SubElement(accessories, 'Комплектующее')
+        аccessory_id = etree.SubElement(accessory, 'Ид')
+        аccessory_name = etree.SubElement(accessory, 'Наименование')
+        аccessory_number = etree.SubElement(accessory, 'Количество')
+        requisites_values = etree.SubElement(offer, 'ЗначенияРеквизитов')
+        requisites_value = etree.SubElement(requisites_values, 'ЗначениеРеквизита')
+        requisites_value_name = etree.SubElement(requisites_value, 'Наименование')
+        requisites_value_value = etree.SubElement(requisites_value, 'Значение')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     def get_nodes_count(self, parent_id):
         counter = 0
