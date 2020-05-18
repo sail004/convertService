@@ -40,7 +40,7 @@ class ConvertService(QMainWindow):
 
     def save_xml(self):
         self.logger.debug('Export started')
-        dataLoader = loaders.Loader(self.appSettings,self.logger)
+        dataLoader = loaders.FbLoader(self.appSettings,self.logger)
         model = dataLoader.Load()
         xmlSaver = saver.XmlSaver(self.appSettings, model, self.logger)
         xmlSaver.save()

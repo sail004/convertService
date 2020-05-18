@@ -18,10 +18,25 @@ class Good:
         self.goodGroupId = goodGroupId
 
 
-class GoodsModel:
-    def __init__(self, goodGroups, goods):
+class Offer:
+    def __init__(self, goodId, assortmentId, goodName, rest, salePrice, barcode, name1, name2):
+
+        self.goodId = goodId
+        self.assortmentId = assortmentId
+        self.goodName = goodName
+        self.rest = rest
+        self.rest = rest
+        self.salePrice = salePrice
+        self.barcode = barcode
+        self.name1 = name1
+        self.name2 = name2
+
+
+class ExportModel:
+    def __init__(self, goodGroups, goods, offers):
         self.goodGroups = goodGroups
         self.goods = goods
+        self.offers = offers
 
 
 class SamlpeGoodsModel:
@@ -64,9 +79,21 @@ class FbLoader:
             good = Good(record[0], record[1], record[2], '', record[3])
             goods.append(good)
 
-        self.__goodsModel = GoodsModel(goodGroups, goods)
+        cur.execute("select g.id as goodid,s.id as assortmentid,g.name as goodsname, rest ,saleprice,barcode, t.name as name1,ga.name  as name2 from currwhrests r join v_assortments s  on r.idassortment=s.id " +
+                    "left join  assortmentgoodattributes ga on s.id=ga.idassortment " +
+                    "left join attributetypes t on t.id=ga.idattributetype " +
+                    "left join goods g on s.idgood=g.id   where rest>0 " +
+                    "order by g.id, s.id")
+        offers = []
+        for record in cur.fetchall():
+            offer = Offer(record[0], record[1], record[2], record[3],
+                          record[4], record[5], record[6], record[7])
+            offers.append(offer)
+        self.__exportModel = ExportModel(goodGroups, goods, offers)
         self.logger.debug("Got %s good groups" %
-                          len(self.__goodsModel.goodGroups))
+                          len(self.__exportModel.goodGroups))
         self.logger.debug("Got %s goods " %
-                          len(self.__goodsModel.goods))
-        return self.__goodsModel
+                          len(self.__exportModel.goods))
+        self.logger.debug("Got %s offers " %
+                          len(self.__exportModel.offers))
+        return self.__exportModel
