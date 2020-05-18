@@ -1,7 +1,6 @@
 import sys
 import json
 import os.path
-import sqlite3
 import logging
 import constants
 import settings

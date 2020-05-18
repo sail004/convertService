@@ -4,4 +4,5 @@
 *.json
 __pycache__/
 settings.json
-
+build/
+dist/

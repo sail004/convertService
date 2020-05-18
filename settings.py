@@ -1,7 +1,6 @@
 import sys
 import json
 import os.path
-import sqlite3
 import constants
 from PyQt5 import uic
 from PyQt5 import QtWidgets
