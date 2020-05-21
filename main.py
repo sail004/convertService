@@ -10,6 +10,16 @@ from PyQt5 import uic, QtWidgets, QtCore
 from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QDialog
 
 
+class LogHandler(logging.Handler):
+    def __init__(self, func, level=logging.NOTSET):
+        logging.Handler.__init__(self, level)
+        self.func = func
+
+    def handle(self, record):
+        logging.Handler.handle
+        self.func(self.format(record))
+
+
 class ConvertService(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -28,23 +38,35 @@ class ConvertService(QMainWindow):
         FORMAT = '%(asctime)-15s %(message)s'
         logging.basicConfig(
             format=FORMAT, filename="convertService.log", level="DEBUG")
-        self.logger = logging.getLogger('convertService')
-        self.logger.debug('Init')
+        baseLogger = logging.getLogger('convertService')
         handler = logging.StreamHandler(sys.stdout)
         handler.setLevel(logging.DEBUG)
-        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        formatter = logging.Formatter(
+            '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
         handler.setFormatter(formatter)
-        self.logger.addHandler(handler)
+        baseLogger.addHandler(handler)
+        logHandler = LogHandler(self.add_line)
+        logHandler.setFormatter(formatter)
+        baseLogger.addHandler(logHandler)
+        self.logger = baseLogger
+        self.logger.debug('Init')
+
+    def add_line(self, msg):
+        item = QtWidgets.QListWidgetItem()
+        item.setText(msg)
+        self.logView.addItem(item)
+
     def show_settings(self):
         self.settingsWindow.show()
 
     def save_xml(self):
         self.logger.debug('Export started')
-        dataLoader = loaders.SampleLoader(self.appSettings,self.logger)
+        dataLoader = loaders.SampleLoader(self.appSettings, self.logger)
         model = dataLoader.Load()
         xmlSaver = saver.XmlSaver(self.appSettings, model, self.logger)
         xmlSaver.save()
         self.logger.debug('Export finished')
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
