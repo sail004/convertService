@@ -8,7 +8,7 @@ import xmlSaver as saver
 import loaders
 from PyQt5 import uic, QtWidgets, QtCore
 from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QDialog
-
+import datetime
 
 class LogHandler(logging.Handler):
     def __init__(self, func, level=logging.NOTSET):
@@ -57,15 +57,27 @@ class ConvertService(QMainWindow):
         self.logView.addItem(item)
 
     def show_settings(self):
-        self.settingsWindow.show()
+        result = self.settingsWindow.exec()
+        if (result):
+            self.save_settings()
+        
+        
+    def testClose(self, events):
+        self.logger.debug('close')
 
     def save_xml(self):
         self.logger.debug('Export started')
+        self.appSettings[constants.lastExportTime] = str(datetime.datetime.now())
+        self.save_settings()
         dataLoader = loaders.SampleLoader(self.appSettings, self.logger)
         model = dataLoader.Load()
         xmlSaver = saver.XmlSaver(self.appSettings, model, self.logger)
         xmlSaver.save()
-        self.logger.debug('Export finished')
+        self.logger.debug('Export finished')  
+     
+    def save_settings(self):
+        with open("settings.json", "w") as read_file:
+            json.dump(self.appSettings, read_file)
 
 
 if __name__ == '__main__':

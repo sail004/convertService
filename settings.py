@@ -19,24 +19,25 @@ class Settings(QDialog):
         if constants.HeaderQuery in self.settings.keys():
             self.heading_request.setText(self.settings[constants.HeaderQuery])
         if constants.PositionQuery in self.settings.keys():
-            self.position_request.setText(self.settings[constants.PositionQuery])
+            self.position_request.setText(
+                self.settings[constants.PositionQuery])
         if constants.UploadDirectory in self.settings.keys():
-            self.upload_directory.setText(self.settings[constants.UploadDirectory])
+            self.upload_directory.setText(
+                self.settings[constants.UploadDirectory])
         if constants.ExchangePeriod in self.settings.keys():
-            self.exchange_period.setText(self.settings[constants.ExchangePeriod])
+            self.exchange_period.setText(
+                self.settings[constants.lastExportTime])
         self.setModal(True)
 
     def run(self):
-
-        self.settings[constants.dbPath] = self.db_way.text()  
+        self.settings[constants.dbPath] = self.db_way.text()
         self.settings[constants.HeaderQuery] = self.heading_request.text()
         self.settings[constants.PositionQuery] = self.position_request.text()
         self.settings[constants.UploadDirectory] = self.upload_directory.text()
         self.settings[constants.ExchangePeriod] = self.exchange_period.text()
-        with open("settings.json", "w") as read_file:
-            json.dump(self.settings, read_file)
-        self.close()
-         
+
+        self.accept()
+
         # else:
         #     error_dialog = QtWidgets.QErrorMessage()
         #     error_dialog.setModal(True)
