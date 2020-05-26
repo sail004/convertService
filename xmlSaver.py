@@ -63,9 +63,9 @@ class XmlSaver:
             # base_one.text = "166"
             good_name = etree.SubElement(good_elem_name, "Наименование")
             good_name.text = good.name
-            # groups = etree.SubElement(good_elem_name, "Группы")
-            # groups_id = etree.SubElement(groups, "Ид")
-            # groups_id.text = '13dab563-e271-11db-95d9-505054503030'
+            groups = etree.SubElement(good_elem_name, "Группы")
+            groups_id = etree.SubElement(groups, "Ид")
+            groups_id.text = str(good.goodGroupId)
             # description = etree.SubElement(good_elem_name, "Описание")
             # country = etree.SubElement(good_elem_name, "Страна")
             # values_of_properties = etree.SubElement(

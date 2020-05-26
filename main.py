@@ -69,7 +69,7 @@ class ConvertService(QMainWindow):
         self.logger.debug('Export started')
         self.appSettings[constants.lastExportTime] = str(datetime.datetime.now())
         self.save_settings()
-        dataLoader = loaders.SampleLoader(self.appSettings, self.logger)
+        dataLoader = loaders.FbLoader(self.appSettings, self.logger)
         model = dataLoader.Load()
         xmlSaver = saver.XmlSaver(self.appSettings, model, self.logger)
         xmlSaver.save()
