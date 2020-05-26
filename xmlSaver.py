@@ -31,6 +31,9 @@ class XmlSaver:
     def saveImport(self):
         comInfoElement = etree.Element('КоммерческаяИнформация', **{'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance'}, **{
                                        'xmlns:xsd': 'http://www.w3.org/2001/XMLSchema'}, **{"ВерсияСхемы": "2.09"}, **{"ДатаФормирования": "2015-06-26T18:28:09"}, **{"xmlns": "urn:1C.ru:commerceml_2"})
+        classificator = etree.SubElement(comInfoElement, 'Классификатор')
+        class_Id = etree.SubElement(classificator, "Ид")
+        name = etree.SubElement(classificator, 'Наименование')
         catalog_element = etree.SubElement(comInfoElement, 'Каталог')
         catalog_element.set('СодержитТолькоИзменения', 'true')
         Id = etree.SubElement(comInfoElement, "Ид")
