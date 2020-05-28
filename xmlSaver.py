@@ -53,9 +53,9 @@ class XmlSaver:
         catalog_element = etree.SubElement(comInfoElement, 'Каталог')
         catalog_element.set('СодержитТолькоИзменения', 'true')
         id_classif = etree.SubElement(catalog_element, "ИдКлассификатора")
-        id_classif.text = "3e376578-5aae-466f-8301-6842d2796cf9"
+        id_classif.text = self.global_id
         id_catalog = etree.SubElement(catalog_element, "Ид")
-        id_catalog.text = "3e376578-5aae-466f-8301-6842d2796cf9"
+        id_catalog.text = self.global_id
         goods = etree.SubElement(catalog_element, "Товары")
         for good in self.model.goods:
             good_elem_name = etree.SubElement(goods, "Товар")
@@ -98,7 +98,7 @@ class XmlSaver:
             'xmlns:xsd': 'http://www.w3.org/2001/XMLSchema'}, **{"ВерсияСхемы": "2.09"}, **{"ДатаФормирования": "2015-06-26T18:28:09"}, **{"xmlns": "urn:1C.ru:commerceml_2"})
         classificator = etree.SubElement(comInfoElement, 'Классификатор')
         Id = etree.SubElement(classificator, "Ид")
-        Id.text = self.global_id
+        Id.text = "1"
         name = etree.SubElement(classificator, 'Наименование')
         name.text = "export"
         offers_pack = etree.SubElement(comInfoElement, 'ПакетПредложений')
@@ -107,9 +107,9 @@ class XmlSaver:
         offers_pack_name = etree.SubElement(offers_pack, 'Наименование')
         offers_pack_name.text = "export"
         catalog_id = etree.SubElement(offers_pack, 'ИдКаталога')
-        catalog_id.text = "1"
+        catalog_id.text = self.global_id
         classificator_id = etree.SubElement(offers_pack, 'ИдКлассификатора')
-        classificator_id.text = "1"
+        classificator_id.text = self.global_id
         offers = etree.SubElement(offers_pack, 'Предложения')
         count = 0
         currentOffer = self.model.offers[0]

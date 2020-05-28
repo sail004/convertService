@@ -57,6 +57,7 @@ class ConvertService(QMainWindow):
         self.logView.addItem(item)
 
     def show_settings(self):
+        self.settingsWindow.refresh(self.appSettings)
         result = self.settingsWindow.exec()
         if (result):
             self.save_settings()

@@ -14,6 +14,10 @@ class Settings(QDialog):
         uic.loadUi('settings.ui', self)
         self.settings = settings
         self.pushButton.clicked.connect(self.run)
+        self.refresh(settings)
+        self.setModal(True)
+
+    def refresh(self, settings):
         if constants.dbPath in self.settings.keys():
             self.db_way.setText(self.settings[constants.dbPath])
         if constants.HeaderQuery in self.settings.keys():
@@ -27,7 +31,6 @@ class Settings(QDialog):
         if constants.ExchangePeriod in self.settings.keys():
             self.exchange_period.setText(
                 self.settings[constants.lastExportTime])
-        self.setModal(True)
 
     def run(self):
         self.settings[constants.dbPath] = self.db_way.text()
@@ -35,4 +38,5 @@ class Settings(QDialog):
         self.settings[constants.PositionQuery] = self.position_request.text()
         self.settings[constants.UploadDirectory] = self.upload_directory.text()
         self.settings[constants.ExchangePeriod] = self.exchange_period.text()
+        self.accept()
         
