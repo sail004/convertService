@@ -35,11 +35,4 @@ class Settings(QDialog):
         self.settings[constants.PositionQuery] = self.position_request.text()
         self.settings[constants.UploadDirectory] = self.upload_directory.text()
         self.settings[constants.ExchangePeriod] = self.exchange_period.text()
-
-        self.accept()
-
-        # else:
-        #     error_dialog = QtWidgets.QErrorMessage()
-        #     error_dialog.setModal(True)
-        #     error_dialog.showMessage('Ошибка! Нет такого файла в системе.')
-        #     error_dialog.exec_()
+        

@@ -67,13 +67,16 @@ class ConvertService(QMainWindow):
 
     def save_xml(self):
         self.logger.debug('Export started')
-        self.appSettings[constants.lastExportTime] = str(datetime.datetime.now())
-        self.save_settings()
-        dataLoader = loaders.SampleLoader(self.appSettings, self.logger)
-        model = dataLoader.Load()
-        xmlSaver = saver.XmlSaver(self.appSettings, model, self.logger)
-        xmlSaver.save()
-        self.logger.debug('Export finished')  
+        try:
+            dataLoader = loaders.SampleLoader(self.appSettings, self.logger)
+            model = dataLoader.Load()
+            xmlSaver = saver.XmlSaver(self.appSettings, model, self.logger)
+            xmlSaver.save()
+            self.appSettings[constants.lastExportTime] = str(datetime.datetime.now())
+            self.save_settings()
+            self.logger.debug('Export finished')
+        except IOError as e:
+            self.logger.error('%s' % e)  
      
     def save_settings(self):
         with open("settings.json", "w") as read_file:
