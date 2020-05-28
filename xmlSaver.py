@@ -33,6 +33,7 @@ class XmlSaver:
         comInfoElement = etree.Element('КоммерческаяИнформация', **{'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance'}, **{
                                        'xmlns:xsd': 'http://www.w3.org/2001/XMLSchema'}, **{"ВерсияСхемы": "2.09"}, **{"ДатаФормирования": "2015-06-26T18:28:09"}, **{"xmlns": "urn:1C.ru:commerceml_2"})
         classificator = etree.SubElement(comInfoElement, 'Классификатор')
+
         class_Id = etree.SubElement(classificator, "Ид")
         name = etree.SubElement(classificator, 'Наименование')
         catalog_element = etree.SubElement(comInfoElement, 'Каталог')
@@ -44,11 +45,18 @@ class XmlSaver:
         id_of_classificator.text = self.global_id
         name = etree.SubElement(comInfoElement, "Наименование")
         name.text = "upp kaz"
-        if len(self.model.goodGroups) > 0:
-            groups = etree.SubElement(comInfoElement, "Группы")
-            self.draw_group_node(None, etree, groups)
 
-        goods = etree.SubElement(comInfoElement, "Товары")
+        if len(self.model.goodGroups) > 0:
+            groups = etree.SubElement(classificator, "Группы")
+            self.draw_group_node(None, etree, groups)
+        
+        catalog_element = etree.SubElement(comInfoElement, 'Каталог')
+        catalog_element.set('СодержитТолькоИзменения', 'true')
+        id_classif = etree.SubElement(catalog_element, "ИдКлассификатора")
+        id_classif.text = "3e376578-5aae-466f-8301-6842d2796cf9"
+        id_catalog = etree.SubElement(catalog_element, "Ид")
+        id_catalog.text = "3e376578-5aae-466f-8301-6842d2796cf9"
+        goods = etree.SubElement(catalog_element, "Товары")
         for good in self.model.goods:
             good_elem_name = etree.SubElement(goods, "Товар")
             good_id = etree.SubElement(good_elem_name, "Ид")
