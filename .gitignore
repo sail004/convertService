@@ -2,7 +2,9 @@
 # User-specific files
 *.log
 *.json
-__pycache__/
+*pycache*/
 settings.json
 build/
 dist/
+__pycache__/settings.cpython-37.pyc
+__pycache__/xmlSaver.cpython-37.pyc
