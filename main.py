@@ -25,6 +25,8 @@ class ConvertService(QMainWindow):
         super().__init__()
         uic.loadUi('mainwindow.ui', self)
         self.settings_open_button.clicked.connect(self.show_settings)
+        self.version = '1.0'
+        self.initUI()
 
         fileName = "settings.json"
         self.appSettings = {}
@@ -50,6 +52,9 @@ class ConvertService(QMainWindow):
         baseLogger.addHandler(logHandler)
         self.logger = baseLogger
         self.logger.debug('Init')
+    
+    def initUI(self):
+        self.setWindowTitle('Convert servise ' + self.version)
 
     def add_line(self, msg):
         item = QtWidgets.QListWidgetItem()
