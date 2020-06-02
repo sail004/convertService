@@ -103,7 +103,7 @@ class XmlSaver:
         name.text = "export"
         offers_pack = etree.SubElement(comInfoElement, 'ПакетПредложений')
         offers_pack_id = etree.SubElement(offers_pack, 'Ид')
-        offers_pack_id.text = "1"
+        offers_pack_id.text = self.global_id+"#"
         offers_pack_name = etree.SubElement(offers_pack, 'Наименование')
         offers_pack_name.text = "export"
         catalog_id = etree.SubElement(offers_pack, 'ИдКаталога')
