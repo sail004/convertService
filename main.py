@@ -25,7 +25,7 @@ class ConvertService(QMainWindow):
         super().__init__()
         uic.loadUi('mainwindow.ui', self)
         self.settings_open_button.clicked.connect(self.show_settings)
-        self.version = '1.0'
+        self.version = '1.01'
         self.initUI()
 
         fileName = "settings.json"
