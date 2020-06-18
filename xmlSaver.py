@@ -38,15 +38,15 @@ class XmlSaver:
         class_Id.text = self.global_id
         name = etree.SubElement(classificator, 'Наименование')
         name.text = "Экспорт"
-        catalog_element = etree.SubElement(comInfoElement, 'Каталог')
-        catalog_element.set('СодержитТолькоИзменения', 'true')
-        Id = etree.SubElement(comInfoElement, "Ид")
-        Id.text = self.global_id
+        # catalog_element = etree.SubElement(comInfoElement, 'Каталог')
+        # catalog_element.set('СодержитТолькоИзменения', 'true')
+        # Id = etree.SubElement(comInfoElement, "Ид")
+        # Id.text = self.global_id
         # id_of_classificator = etree.SubElement(
         #     comInfoElement, "ИдКлассификатора")
         # id_of_classificator.text = self.global_id
-        name1 = etree.SubElement(comInfoElement, "Наименование")
-        name1.text = "Товары"
+       # name1 = etree.SubElement(comInfoElement, "Наименование")
+        # name1.text = "Товары"
 
         if len(self.model.goodGroups) > 0:
             groups = etree.SubElement(classificator, "Группы")
@@ -58,6 +58,8 @@ class XmlSaver:
         id_classif.text = self.global_id
         id_catalog = etree.SubElement(catalog_element, "Ид")
         id_catalog.text = self.global_id
+        name1 = etree.SubElement(catalog_element, "Наименование")
+        name1.text = "Товары"
         goods = etree.SubElement(catalog_element, "Товары")
         for good in self.model.goods:
             good_elem_name = etree.SubElement(goods, "Товар")
