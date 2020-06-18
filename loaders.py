@@ -73,22 +73,31 @@ class FbLoader:
         connection = fdb.connect(
             dsn=self.settings[constants.dbPath], user='sysdba', password='masterke')
         cur = connection.cursor()
-        cur.execute("select id,name,idparentgroup,treepath from v_goodgroups")
+        cur.execute("select id,name,idparentgroup,treepath from v_goodgroups where id not in(868, 973, 1000, 1087, 1006, 948)")
         goodGroups = []
         for record in cur.fetchall():
             group = GoodGroup(record[0], record[1], record[2])
             goodGroups.append(group)
-        cur.execute("select id,name,articul,idgoodgroup from v_goods")
+        cur.execute("select id,name,articul,idgoodgroup from v_goods where idgoodgroup not in (868, 973, 1000, 1087, 1006, 948)")
         goods = []
         for record in cur.fetchall():
             good = Good(record[0], record[1], record[2], '', record[3])
             goods.append(good)
 
-        cur.execute("select g.id as goodid,s.id as assortmentid,g.name as goodsname, rest ,saleprice,barcode, t.name as name1,ga.name  as name2 from currwhrests r join v_assortments s  on r.idassortment=s.id " +
-                    "left join  assortmentgoodattributes ga on s.id=ga.idassortment " +
+        #cur.execute("select g.id as goodid,s.id as assortmentid,g.name as goodsname, rest ,saleprice,barcode, t.name as name1,ga.name  as name2 from currwhrests r join v_assortments s  on r.idassortment=s.id " +
+        #            "left join  assortmentgoodattributes ga on s.id=ga.idassortment " +
+        #            "left join attributetypes t on t.id=ga.idattributetype " +
+        #            "left join goods g on s.idgood=g.id " +
+        #            "order by g.id, s.id")
+        cur.execute("select g.id as goodid,s.id as assortmentid,g.name as goodsname, r.rest ,r.saleprice,b.barcode, t.name as name1,ga.name  as name2 " +
+                    "from goods g join v_assortments s  on g.id=s.idgood " +
+                    "left join  assortmentgoodattributes ga on s.id=ga.idassortment "+
+                    "left join barcodes b on s.id=b.idassortment "+
                     "left join attributetypes t on t.id=ga.idattributetype " +
-                    "left join goods g on s.idgood=g.id   where rest>0 " +
+                    "left join currwhrests r on r.idassortment=s.id " +
+                    "where r.rest >=0 " +
                     "order by g.id, s.id")
+
         offers = []
         for record in cur.fetchall():
             offer = Offer(record[0], record[1], record[2], record[3],
