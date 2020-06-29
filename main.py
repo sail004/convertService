@@ -27,7 +27,6 @@ class ConvertService(QMainWindow):
         self.settings_open_button.clicked.connect(self.show_settings)
         self.version = '1.01'
         self.initUI()
-
         fileName = "settings.json"
         self.appSettings = {}
         if (os.path.exists(fileName)):

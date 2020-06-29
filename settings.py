@@ -16,6 +16,12 @@ class Settings(QDialog):
         self.pushButton.clicked.connect(self.run)
         self.refresh(settings)
         self.setModal(True)
+        self.comboBox.currentIndexChanged.connect(self.comboBoxAccepted)
+    
+    def comboBoxAccepted(self):
+        self.tabWidget.setCurrentIndex(self.comboBox.currentIndex())
+        
+    
 
     def refresh(self, settings):
         if constants.dbPath in self.settings.keys():
