@@ -35,6 +35,11 @@
         <string>Размер 1c</string>
        </property>
       </item>
+      <item>
+       <property name="text">
+        <string>Эвотор</string>
+       </property>
+      </item>
      </widget>
     </item>
     <item>
@@ -49,7 +54,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <property name="iconSize">
        <size>
@@ -71,12 +76,12 @@
       </property>
       <widget class="QWidget" name="test">
        <attribute name="title">
-        <string/>
+        <string>Тест</string>
        </attribute>
       </widget>
       <widget class="QWidget" name="size">
        <attribute name="title">
-        <string/>
+        <string>1C</string>
        </attribute>
        <widget class="QWidget" name="verticalLayoutWidget">
         <property name="geometry">
@@ -146,6 +151,53 @@
          </item>
          <item>
           <widget class="QLineEdit" name="exchange_period"/>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>Эвотор</string>
+       </attribute>
+       <widget class="QWidget" name="verticalLayoutWidget_3">
+        <property name="geometry">
+         <rect>
+          <x>9</x>
+          <y>9</y>
+          <width>621</width>
+          <height>151</height>
+         </rect>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>API key</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="apiKeyEdit"/>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_7">
+           <property name="text">
+            <string>Db path</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="dbPathEdit"/>
+         </item>
+         <item>
+          <widget class="QLabel" name="Firebirdclientlibrarypath">
+           <property name="text">
+            <string>Firebird client library path</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="fbClientEdit"/>
          </item>
         </layout>
        </widget>
