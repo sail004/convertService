@@ -4,7 +4,7 @@ import os.path
 import logging
 import constants
 import settings
-import xmlSaver as xmlSaver
+import saverResolver
 import loaders
 from PyQt5 import uic, QtWidgets, QtCore
 from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QDialog
@@ -76,7 +76,7 @@ class ConvertService(QMainWindow):
         try:
             dataLoader = loaders.LoaderResolver(self.appSettings, self.logger).GetLoader()
             model = dataLoader.Load()
-            saver = xmlSaver.SaverResolver(self.appSettings, model, self.logger).GetSaver()
+            saver = saverResolver.SaverResolver(self.appSettings, model, self.logger).GetSaver()
             saver.save()
             self.appSettings[constants.lastExportTime] = str(datetime.datetime.now())
             self.save_settings()

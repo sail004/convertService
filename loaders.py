@@ -61,7 +61,7 @@ class LoaderResolver:
         if (self.settings[constants.ExchangeType]==1):
             return FbLoader(self.settings, self.logger)
         if (self.settings[constants.ExchangeType]==2):
-            return SampleLoader(self.settings, self.logger)
+            return EvotorLoader(self.settings, self.logger)
         return SampleLoader(self.settings, self.logger)
 
 class SampleLoader:

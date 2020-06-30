@@ -12,22 +12,6 @@ def prettify(elem):
     return reparsed.toprettyxml(indent='t')
 
 
-class SaverResolver:
-    def __init__(self, settings, model, logger):
-        self.settings = settings
-        self.model = model
-        self.logger = logger
-
-    def GetSaver(self):
-        if (self.settings[constants.ExchangeType] == 0):
-            return XmlSaver(self.settings, self.model, self.logger)
-        if (self.settings[constants.ExchangeType] == 1):
-            return XmlSaver(self.settings, self.model, self.logger)
-        if (self.settings[constants.ExchangeType] == 2):
-            return EvotorSaver(self.settings, self.model, self.logger)
-        return XmlSaver(self.settings, self.model, self.logger)
-
-
 class XmlSaver:
     def __init__(self, settings, model, logger):
         self.settings = settings
@@ -194,11 +178,3 @@ class XmlSaver:
                 counter += 1
         return counter
 
-class EvotorSaver:
-    def __init__(self, settings, model, logger):
-        self.settings = settings
-        self.model = model
-        self.logger = logger
-
-    def save(self):
-        self.logger.debug("Evotor api interaction...")
