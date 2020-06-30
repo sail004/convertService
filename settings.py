@@ -12,10 +12,12 @@ class Settings(QDialog):
     def __init__(self, settings):
         super().__init__()
         uic.loadUi('settings.ui', self)
+        self.tabWidget.tabBar().hide()
         self.settings = settings
         self.pushButton.clicked.connect(self.run)
         self.refresh(settings)
         self.setModal(True)
+
         self.comboBox.currentIndexChanged.connect(self.comboBoxAccepted)
     
     def comboBoxAccepted(self):

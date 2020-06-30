@@ -2,8 +2,8 @@ import requests
 import json
 
 token = '4844506a-d4c9-471d-8eb1-abebd865d91c'
-headers = {'accept': 'application/vnd.evotor.v2+json;charset=UTF-8',
-           'content-type':'application/vnd.evotor.v2+bulk+json',
+headers = {'Accept': 'application/vnd.evotor.v2+json;charset=UTF-8',
+           'Content-type':'application/vnd.evotor.v2+bulk+json',
             'x-authorization': '4844506a-d4c9-471d-8eb1-abebd865d91c'
            }
 # def get_uuid():
@@ -57,7 +57,7 @@ body =[
 json_body=json.dumps(body)
 #json_body=json.dumps('{  "name":"Товар 1",  "type":"NORMAL",  "measure_name":"шт",  "tax":"VAT_18",  "allow_to_sell":true,  "price":111.0,  "cost_price":9352.5,  "parent_id":"5cd54680-5152-11e9-91c7-4b1dd1e1bcf8",  "attributes_choices":{    "be30db90-514f-11e9-91c7-4b1dd1e1bcf8":"be30db91-514f-11e9-91c7-4b1dd1e1bcf8",    "be30db94-514f-11e9-91c7-4b1dd1e1bcf8":"be3102a0-514f-11e9-91c7-4b1dd1e1bcf8"  }}')
 print(json_body)
-p = requests.post(url,data="{'name':'test 1','type':'NORMAL','measure_name':'шт','tax':'VAT_18','allow_to_sell':true,'price':111.0,'cost_price':9352.5,parent_id':'5cd54680-5152-11e9-91c7-4b1dd1e1bcf8','attributes_choices':{'be30db90-514f-11e9-91c7-4b1dd1e1bcf8':'be30db91-514f-11e9-91c7-4b1dd1e1bcf8','be30db94-514f-11e9-91c7-4b1dd1e1bcf8':'be3102a0-514f-11e9-91c7-4b1dd1e1bcf8'}}".encode('utf-8'), headers={'accept': 'application/vnd.evotor.v2+json;charset=UTF-8','content-type':'application/vnd.evotor.v2+bulk+json','x-authorization': '4844506a-d4c9-471d-8eb1-abebd865d91c'})
+p = requests.post(url,data="{'name':'test 1','type':'NORMAL','measure_name':'шт','tax':'VAT_18','allow_to_sell':true,'price':111.0,'cost_price':9352.5,parent_id':'5cd54680-5152-11e9-91c7-4b1dd1e1bcf8','attributes_choices':{'be30db90-514f-11e9-91c7-4b1dd1e1bcf8':'be30db91-514f-11e9-91c7-4b1dd1e1bcf8','be30db94-514f-11e9-91c7-4b1dd1e1bcf8':'be3102a0-514f-11e9-91c7-4b1dd1e1bcf8'}}".encode('utf-8'),headers=headers)
 # p = requests.post(url, json=json_body, headers=headers)
 print(p)
 
