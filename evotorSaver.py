@@ -18,7 +18,7 @@ class EvotorSaver:
     def transformModel(self):
         result=[]
         for good in self.model.goods:
-            result.append({"name":good.name, "price":10,"measure_name":"шт", "tax":"VAT_20","allow_to_sell":True, "article_number": good.articul,"code":good.articul, "barcodes":[good.barcode],"type": "ALCOHOL_NOT_MARKED"})
+            result.append({ "parent_id": "1ddea16b-971b-dee5-3798-1b29a7aa2e27", "name":good.name, "price":10,"measure_name":"шт", "tax":"VAT_20","allow_to_sell":True, "article_number": good.articul,"code":good.articul, "barcodes":[good.barcode],"type": "ALCOHOL_NOT_MARKED"})
         return result
 
     def save(self):
