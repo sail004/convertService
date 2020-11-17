@@ -18,24 +18,23 @@ class EvotorSaver:
     def transformModel(self):
         result=[]
         for good in self.model.goods:
-            result.append({ "parent_id": "1ddea16b-971b-dee5-3798-1b29a7aa2e27", "name":good.name, "price":10,"measure_name":"шт", "tax":"VAT_20","allow_to_sell":True, "article_number": good.articul,"code":good.articul, "barcodes":[good.barcode],"type": "ALCOHOL_NOT_MARKED"})
+            result.append({"parent_id":"2137d28b-e83f-4a19-b72e-34b6972d2351", "type": "NORMAL", "name":good.name, "price":10, "cost_price":1, "quantity": 8,"measure_name":"шт", "tax":"VAT_18","allow_to_sell":True, "description":"", "article_number": good.articul, "barcodes":[good.barcode]})
         return result
 
     def save(self):
         self.logger.debug("Evotor api interaction...")
-        self.headers = {'Accept': 'application/vnd.evotor.v2+json;charset=UTF-8',
-                        'Content-type': 'application/vnd.evotor.v2+bulk+json', 'x-authorization': self.settings[constants.apiKey]
+        self.headers = {'Accept': 'application/vnd.evotor.v2+json',
+                        'Content-type': 'application/vnd.evotor.v2+json', 'x-authorization': self.settings[constants.apiKey]
+                        #При запросе типа post id товара присваивается автоматически при добавлении +bulk в content type ничего не работает
                         }
         StoreUuid = self.get_store_uuid()
         self.logger.debug("Got store uuid:"+StoreUuid)
         url = "https://api.evotor.ru/stores/"+StoreUuid+"/products"
 
         body = self.transformModel()
-
         json_body=json.dumps(body)
-        
         print(json_body)
 
         requestResult = requests.post(url,data=json_body, headers=self.headers)
-        self.logger.debug(requestResult)
+        self.logger.debug(requestResult.json())
 
