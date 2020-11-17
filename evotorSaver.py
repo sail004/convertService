@@ -21,6 +21,12 @@ class EvotorSaver:
             result.append({"parent_id":"2137d28b-e83f-4a19-b72e-34b6972d2351", "type": "NORMAL", "name":good.name, "price":10, "cost_price":1, "quantity": 8,"measure_name":"шт", "tax":"VAT_18","allow_to_sell":True, "description":"", "article_number": good.articul, "barcodes":[good.barcode]})
         return result
 
+    def GoodGroups(self):
+        result=[]
+        for group in self.model.goodGroups:
+            result.append({'name': group.name})
+        return result
+
     def save(self):
         self.logger.debug("Evotor api interaction...")
         self.headers = {'Accept': 'application/vnd.evotor.v2+json',
@@ -34,7 +40,13 @@ class EvotorSaver:
         body = self.transformModel()
         json_body=json.dumps(body)
         print(json_body)
-
         requestResult = requests.post(url,data=json_body, headers=self.headers)
+
+        url = 'https://api.evotor.ru/stores/'+StoreUuid+'/product-groups'
+        body = self.GoodGroups()
+        json_body=json.dumps(body)
+        print(json_body)
+        requestResult = requests.post(url, data=json_body, headers=self.headers)
+
         self.logger.debug(requestResult.json())
 
