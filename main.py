@@ -4,7 +4,7 @@ import os.path
 import logging
 import constants
 import settings
-import xmlSaver as saver
+import saverResolver
 import loaders
 from PyQt5 import uic, QtWidgets, QtCore
 from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QDialog
@@ -27,7 +27,6 @@ class ConvertService(QMainWindow):
         self.settings_open_button.clicked.connect(self.show_settings)
         self.version = '1.01'
         self.initUI()
-
         fileName = "settings.json"
         self.appSettings = {}
         if (os.path.exists(fileName)):
@@ -75,10 +74,10 @@ class ConvertService(QMainWindow):
         self.logger.debug('Export started')
 
         try:
-            dataLoader = loaders.FbLoader(self.appSettings, self.logger)
+            dataLoader = loaders.LoaderResolver(self.appSettings, self.logger).GetLoader()
             model = dataLoader.Load()
-            xmlSaver = saver.XmlSaver(self.appSettings, model, self.logger)
-            xmlSaver.save()
+            saver = saverResolver.SaverResolver(self.appSettings, model, self.logger).GetSaver()
+            saver.save()
             self.appSettings[constants.lastExportTime] = str(datetime.datetime.now())
             self.save_settings()
             self.logger.debug('Export finished')
