@@ -14,7 +14,22 @@ class EvotorSaver:
         response = requests.get(url, headers=self.headers)
         StoreUuid = response.json()[0]['uuid']
         return StoreUuid
-    
+
+    def get_products(self):
+        StoreUuid = self.get_store_uuid()
+        url = 'https://api.evotor.ru/stores/' + StoreUuid + '/products'
+        response = requests.get(url, headers=self.headers)
+        Products = response.json()['items']
+        return (Products)
+
+    def get_groups(self):
+        StoreUuid = self.get_store_uuid()
+        url = 'https://api.evotor.ru/stores/' + StoreUuid + '/product-groups'
+        print(url)
+        response = requests.get(url, headers=self.headers)
+        Groups = response.json()['items']
+        return Groups
+
     def transformModel(self):
         result=[]
         for good in self.model.goods:
@@ -24,14 +39,13 @@ class EvotorSaver:
     def GoodGroups(self):
         result=[]
         for group in self.model.goodGroups:
-            result.append({'name': group.name})
+            result.append({'name': group.name, 'parent_id': group.evotorparentid})
         return result
 
     def save(self):
         self.logger.debug("Evotor api interaction...")
         self.headers = {'Accept': 'application/vnd.evotor.v2+json',
-                        'Content-type': 'application/vnd.evotor.v2+json', 'x-authorization': self.settings[constants.apiKey]
-                        #При запросе типа post id товара присваивается автоматически при добавлении +bulk в content type ничего не работает
+                        'Content-type': 'application/vnd.evotor.v2+json', 'x-authorization': self.settings[constants.apiKey] #При запросе типа post id товара присваивается автоматически при добавлении +bulk в content type ничего не работает
                         }
         StoreUuid = self.get_store_uuid()
         self.logger.debug("Got store uuid:"+StoreUuid)
@@ -48,5 +62,36 @@ class EvotorSaver:
         print(json_body)
         requestResult = requests.post(url, data=json_body, headers=self.headers)
 
+        products_json = self.get_products()
+        with open('products.json', 'w') as outfile:
+            json.dump(products_json, outfile, indent=2)
+
+        groups_json = self.get_groups()
+        with open('groups.json', 'w') as outfile:
+            json.dump(groups_json, outfile, ensure_ascii=False, indent=2)
+
+        with open('groups.json', 'r') as infile:     #если у товара нет parent_id то это поле просто не возвращается в JSONе, каеф
+            groups_sql = json.loads(infile.read())
+            parent_id = 'Null'
+            for groups_sql in groups_sql:
+                try:
+                    name = groups_sql['name']
+                    id = groups_sql['id']
+                    parent_id = groups_sql['parent_id']
+                except KeyError:
+                    name = groups_sql['name']
+                    id = groups_sql['id']
+
+                print(name, id, parent_id)
+                # url = 'https://api.evotor.ru/stores/' + StoreUuid + '/product-groups/' + id #УДАЛЕНИЕ ГРУПП ПО ОДНОЙ В СТО ТЫЩ ПРОХОДОВ
+                # print(url)
+                # response = requests.delete(url, headers=self.headers)
+                # print(response)
+
+
+
+
         self.logger.debug(requestResult.json())
+
+
 
