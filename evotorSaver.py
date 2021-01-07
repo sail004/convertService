@@ -40,8 +40,8 @@ class EvotorSaver:
     def GoodGroups(self):
         result=[]
         for group in self.model.goodGroups:
-            result.append({'name': group.name, 'parent_id': group.evotorparentid})
-
+            result.append({'name': group.name})
+        return result
     
     def transformModel(self):
         result=[]
@@ -57,8 +57,8 @@ class EvotorSaver:
                         'Content-type': 'application/vnd.evotor.v2+json', 'x-authorization': self.settings[constants.apiKey] #При запросе типа post id товара присваивается автоматически при добавлении +bulk в content type ничего не работает
                         }
         StoreUuid = self.get_store_uuid()
-      #  self.logger.debug("Got store uuid:"+StoreUuid)
-      #  url = "https://api.evotor.ru/stores/"+StoreUuid+"/products"
+        self.logger.debug("Got store uuid:"+StoreUuid)
+        url = "https://api.evotor.ru/stores/"+StoreUuid+"/products"
 
         body = self.transformModel()
 
@@ -71,7 +71,10 @@ class EvotorSaver:
         json_body=json.dumps(body)
         print(json_body)
         requestResult = requests.post(url, data=json_body, headers=self.headers)
-
+        requestParser = EvatorResultParser(requestResult)
+        res = requestParser.enreachModel(self.model.goodGroups)
+# Здесь надо пропарсить ответ, вытащить из него идентификаторы и обновить ими нашу модель. Связываемся пока по имени группы.
+# По обновленной модели надо снова запустить импорт, только в качестве parentId указать идентификатор эвотора (той группы на которую мы ссылаемся нашем parentId)
         products_json = self.get_products()
         with open('products.json', 'w') as outfile:
             json.dump(products_json, outfile, indent=2)
@@ -103,6 +106,24 @@ class EvotorSaver:
 
         self.logger.debug(requestResult.json())
 
+class EvatorResultParser():
+    def __init__(self, requestResult):
+        self.requestResult = requestResult
+    def enreachModel(self, GoodGroups):
+        parcedGoodGroups = json.loads(self.requestResult.text)
+        for GoodGroup in GoodGroups:
+            for elem in parcedGoodGroups:
+                if GoodGroup.name == elem['name']:
+                    GoodGroup.evotorid = elem['id']
+        for GoodGroup in GoodGroups:
+            for elem in GoodGroups:
+                if GoodGroup.parent_id == elem.id:
+                    GoodGroup.evotorparentid = elem.evotorid
+        return GoodGroups
+
+
+
+
 
 
 
@@ -112,5 +133,3 @@ class EvotorSaver:
 
 #        requestResult = requests.post(url,data=json_body, headers=self.headers)
 #        self.logger.debug(requestResult)
-
-

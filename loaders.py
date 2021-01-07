@@ -43,10 +43,10 @@ class ExportModel:
 
 class SamlpeGoodsModel:
     def __init__(self):
-        self.goodGroups = [GoodGroup(1, "Корень", None), GoodGroup(
-            2, "Молоко ", 1), GoodGroup(3, "Хлеб", 1)]
-        self.goods = [Good(1, "Молоко 1", "art1", "1234567890123", 2), Good(
-            2, "Молоко 2", "art2", "123", 2), Good(3, "Хлеб 1", "art3", "12345", 3)]
+        self.goodGroups = [GoodGroup(1, "Корень", 0, "1", "0"), GoodGroup(
+            2, "Молоко ", 1, "1", "0"), GoodGroup(3, "Хлеб", 1, "1", "0")]
+        self.goods = [Good(1, "Молоко 1", "art1", "1234567890123", 2, 0), Good(
+            2, "Молоко 2", "art2", "123", 2, 0), Good(3, "Хлеб 1", "art3", "12345", 3, 0)]
         self.offers=[Offer(20041,156144,"СОРОЧКА ALLAN NEUMANN 000722",	1,	1400.00,	"2400000040798",	"ЦВЕТ",	"АЙВОРИ"),
             Offer(20041,156144,"СОРОЧКА ALLAN NEUMANN 000722",	1,	1400.00,	"2400000040798",	"МОДЕЛЬ",	"000722"),
             Offer(20105,156157,"КОСТЮМ БРАНОФФ",	1,	999.00,	"2400000065722",	"МОДЕЛЬ",	"5505-00")]
