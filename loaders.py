@@ -136,6 +136,7 @@ class EvotorLoader:
     def Load(self):
         self.logger.debug("Starting evotor loader")
         connection = fdb.connect(
+
             dsn=self.settings[constants.dbPath], user='sysdba', password='masterke')#,fb_library_name=self.settings[constants.FbClientPath])
         cur = connection.cursor()
         cur.execute("select id,name,idparentgroup,evotorid,evotorparentid from v_goodgroups where id not in(868, 973, 1000, 1087, 1006, 948)")
@@ -148,6 +149,7 @@ class EvotorLoader:
         for record in cur.fetchall():
             good = Good(record[0], record[1], record[2],  record[4], record[3], record[5])
             goods.append(good)
+
 
         cur.execute("select  first 10  g.id as goodid,s.id as assortmentid,g.name as goodsname, r.rest ,r.saleprice,b.barcode, t.name as name1,ga.name  as name2 " +
                     "from goods g join v_assortments s  on g.id=s.idgood " +
@@ -171,5 +173,3 @@ class EvotorLoader:
         self.logger.debug("Got %s offers " %
                           len(self.__exportModel.offers))
         return self.__exportModel
-
-

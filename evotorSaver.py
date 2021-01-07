@@ -15,6 +15,7 @@ class EvotorSaver:
         StoreUuid = response.json()[0]['uuid']
         return StoreUuid
 
+
     def get_products(self):
         StoreUuid = self.get_store_uuid()
         url = 'https://api.evotor.ru/stores/' + StoreUuid + '/products'
@@ -40,18 +41,27 @@ class EvotorSaver:
         result=[]
         for group in self.model.goodGroups:
             result.append({'name': group.name, 'parent_id': group.evotorparentid})
+
+    
+    def transformModel(self):
+        result=[]
+        for good in self.model.goods:
+            result.append({ "parent_id": "1ddea16b-971b-dee5-3798-1b29a7aa2e27", "name":good.name, "price":10,"measure_name":"шт", "tax":"VAT_20","allow_to_sell":True, "article_number": good.articul,"code":good.articul, "barcodes":[good.barcode],"type": "ALCOHOL_NOT_MARKED"})
+
         return result
 
     def save(self):
         self.logger.debug("Evotor api interaction...")
+
         self.headers = {'Accept': 'application/vnd.evotor.v2+json',
                         'Content-type': 'application/vnd.evotor.v2+json', 'x-authorization': self.settings[constants.apiKey] #При запросе типа post id товара присваивается автоматически при добавлении +bulk в content type ничего не работает
                         }
         StoreUuid = self.get_store_uuid()
-        self.logger.debug("Got store uuid:"+StoreUuid)
-        url = "https://api.evotor.ru/stores/"+StoreUuid+"/products"
+      #  self.logger.debug("Got store uuid:"+StoreUuid)
+      #  url = "https://api.evotor.ru/stores/"+StoreUuid+"/products"
 
         body = self.transformModel()
+
         json_body=json.dumps(body)
         print(json_body)
         requestResult = requests.post(url,data=json_body, headers=self.headers)
@@ -93,5 +103,14 @@ class EvotorSaver:
 
         self.logger.debug(requestResult.json())
 
+
+
+
+#        json_body=json.dumps(body)
+#        
+#        print(json_body)
+
+#        requestResult = requests.post(url,data=json_body, headers=self.headers)
+#        self.logger.debug(requestResult)
 
 
