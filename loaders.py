@@ -3,20 +3,22 @@ import constants
 
 
 class GoodGroup:
-    def __init__(self, id, name, parent_id):
+    def __init__(self, id, name, parent_id, evotorid, evotorparentid):
         self.name = name
         self.id = id
         self.parent_id = parent_id
+        self.evotorid = evotorid
+        self.evotorparentid = evotorparentid
 
 
 class Good:
-    def __init__(self, id, name, articul, barcode, goodGroupId):
+    def __init__(self, id, name, articul, barcode, goodGroupId,evotorid):
         self.name = name
         self.id = id
         self.articul = articul
         self.barcode = barcode
         self.goodGroupId = goodGroupId
-
+        self.evotorid = evotorid
 
 class Offer:
     def __init__(self, goodId, assortmentId, goodName, rest, salePrice, barcode, name1, name2):
@@ -134,24 +136,21 @@ class EvotorLoader:
     def Load(self):
         self.logger.debug("Starting evotor loader")
         connection = fdb.connect(
-            dsn=self.settings[constants.dbPath], user='sysdba', password='masterke',fb_library_name=self.settings[constants.FbClientPath])
+
+            dsn=self.settings[constants.dbPath], user='sysdba', password='masterke')#,fb_library_name=self.settings[constants.FbClientPath])
         cur = connection.cursor()
-        cur.execute("select id,name,idparentgroup,treepath from v_goodgroups where id not in(868, 973, 1000, 1087, 1006, 948)")
+        cur.execute("select id,name,idparentgroup,evotorid,evotorparentid from v_goodgroups where id not in(868, 973, 1000, 1087, 1006, 948)")
         goodGroups = []
         for record in cur.fetchall():
-            group = GoodGroup(record[0], record[1], record[2])
+            group = GoodGroup(record[0], record[1], record[2], record[3], record[4])
             goodGroups.append(group)
-        cur.execute("select first 10  g.id,name,articul,idgoodgroup, b.barcode from v_goods g left join barcodes b on b.idgood=g.id where idgoodgroup not in (868, 973, 1000, 1087, 1006, 948)")
+        cur.execute("select first 10  g.id,name,articul,idgoodgroup, b.barcode, g.evotorid from v_goods g left join barcodes b on b.idgood=g.id where idgoodgroup not in (868, 973, 1000, 1087, 1006, 948)")
         goods = []
         for record in cur.fetchall():
-            good = Good(record[0], record[1], record[2],  record[4], record[3])
+            good = Good(record[0], record[1], record[2],  record[4], record[3], record[5])
             goods.append(good)
 
-        #cur.execute("select g.id as goodid,s.id as assortmentid,g.name as goodsname, rest ,saleprice,barcode, t.name as name1,ga.name  as name2 from currwhrests r join v_assortments s  on r.idassortment=s.id " +
-        #            "left join  assortmentgoodattributes ga on s.id=ga.idassortment " +
-        #            "left join attributetypes t on t.id=ga.idattributetype " +
-        #            "left join goods g on s.idgood=g.id " +
-        #            "order by g.id, s.id")
+
         cur.execute("select  first 10  g.id as goodid,s.id as assortmentid,g.name as goodsname, r.rest ,r.saleprice,b.barcode, t.name as name1,ga.name  as name2 " +
                     "from goods g join v_assortments s  on g.id=s.idgood " +
                     "left join  assortmentgoodattributes ga on s.id=ga.idassortment "+
