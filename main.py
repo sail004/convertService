@@ -9,6 +9,8 @@ import loaders
 from PyQt5 import uic, QtWidgets, QtCore
 from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QDialog
 import datetime
+import requests
+
 
 class LogHandler(logging.Handler):
     def __init__(self, func, level=logging.NOTSET):
@@ -35,6 +37,8 @@ class ConvertService(QMainWindow):
 
         self.start_button.clicked.connect(self.save_xml)
         self.settingsWindow = settings.Settings(self.appSettings)
+        self.test_button.clicked.connect(self.test)
+        self.delete_button.clicked.connect(self.delete_all)
 
         FORMAT = '%(asctime)-15s %(message)s'
         logging.basicConfig(
@@ -59,6 +63,38 @@ class ConvertService(QMainWindow):
         item = QtWidgets.QListWidgetItem()
         item.setText(msg)
         self.logView.addItem(item)
+
+    def delete_all(self):
+        self.logger.debug("Evotor api test...")
+
+        self.headers = {
+                        'Content-type': 'application/json', 'x-authorization': self.appSettings[constants.apiKey] #При запросе типа post id товара присваивается автоматически при добавлении +bulk в content type ничего не работает
+                        }
+        StoreUuid = self.get_store_uuid()
+        self.logger.debug("Got store uuid:"+StoreUuid)
+        url = "https://api.evotor.ru/api/v1/inventories/stores/"+StoreUuid+"/products/delete"
+
+        requestResult = requests.post(url, data="[]", headers=self.headers)
+        self.logger.debug(requestResult)
+    
+    def get_store_uuid(self):
+        url = 'https://api.evotor.ru/api/v1/inventories/stores/search'
+        response = requests.get(url, headers=self.headers)
+        StoreUuid = response.json()[0]['uuid']
+        return StoreUuid
+
+    def test(self):
+        self.logger.debug("Evotor api test...")
+
+        self.headers = {'Accept': 'application/vnd.evotor.v2+json',
+                        'Content-type': 'application/vnd.evotor.v2+json', 'x-authorization': self.appSettings[constants.apiKey] #При запросе типа post id товара присваивается автоматически при добавлении +bulk в content type ничего не работает
+                        }
+        StoreUuid = self.get_store_uuid()
+        self.logger.debug("Got store uuid:"+StoreUuid)
+        url = "https://api.evotor.ru/api/v1/inventories/stores/"+StoreUuid+"/products"
+
+        requestResult = requests.get(url, headers=self.headers)
+        self.logger.debug(requestResult)
 
     def show_settings(self):
         self.settingsWindow.refresh(self.appSettings)

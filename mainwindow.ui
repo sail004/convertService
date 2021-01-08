@@ -56,6 +56,20 @@
         </widget>
        </item>
        <item>
+        <widget class="QPushButton" name="test_button">
+         <property name="text">
+          <string>Тест</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="delete_button">
+         <property name="text">
+          <string>Удалить все</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QPushButton" name="stop_button">
          <property name="text">
           <string>Стоп</string>
