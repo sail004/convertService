@@ -57,7 +57,7 @@ class ConvertService(QMainWindow):
         self.logger.debug('Init')
     
     def initUI(self):
-        self.setWindowTitle('Convert servise ' + self.version)
+        self.setWindowTitle('Convert service ' + self.version)
 
     def add_line(self, msg):
         item = QtWidgets.QListWidgetItem()
@@ -65,11 +65,9 @@ class ConvertService(QMainWindow):
         self.logView.addItem(item)
 
     def delete_all(self):
-        self.logger.debug("Evotor api test...")
+        self.logger.debug("Evotor api clear all data...")
 
-        self.headers = {
-                        'Content-type': 'application/json', 'x-authorization': self.appSettings[constants.apiKey] #При запросе типа post id товара присваивается автоматически при добавлении +bulk в content type ничего не работает
-                        }
+        self.headers = {'Content-type': 'application/json', 'x-authorization': self.appSettings[constants.apiKey]}
         StoreUuid = self.get_store_uuid()
         self.logger.debug("Got store uuid:"+StoreUuid)
         url = "https://api.evotor.ru/api/v1/inventories/stores/"+StoreUuid+"/products/delete"
@@ -79,7 +77,7 @@ class ConvertService(QMainWindow):
     
     def get_store_uuid(self):
         url = 'https://api.evotor.ru/api/v1/inventories/stores/search'
-        response = requests.get(url, headers=self.headers)
+        response = requests.get(url, headers = self.headers)
         StoreUuid = response.json()[0]['uuid']
         return StoreUuid
 
@@ -87,14 +85,14 @@ class ConvertService(QMainWindow):
         self.logger.debug("Evotor api test...")
 
         self.headers = {'Accept': 'application/vnd.evotor.v2+json',
-                        'Content-type': 'application/vnd.evotor.v2+json', 'x-authorization': self.appSettings[constants.apiKey] #При запросе типа post id товара присваивается автоматически при добавлении +bulk в content type ничего не работает
+                        'Content-type': 'application/vnd.evotor.v2+json', 'x-authorization': self.appSettings[constants.apiKey] 
                         }
         StoreUuid = self.get_store_uuid()
         self.logger.debug("Got store uuid:"+StoreUuid)
         url = "https://api.evotor.ru/api/v1/inventories/stores/"+StoreUuid+"/products"
 
         requestResult = requests.get(url, headers=self.headers)
-        self.logger.debug(requestResult)
+        self.logger.debug(requestResult.text)
 
     def show_settings(self):
         self.settingsWindow.refresh(self.appSettings)
