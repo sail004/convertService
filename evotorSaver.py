@@ -15,7 +15,6 @@ class EvotorSaver:
         StoreUuid = response.json()[0]['uuid']
         return StoreUuid
 
-
     def get_products(self):
         StoreUuid = self.get_store_uuid()
         url = 'https://api.evotor.ru/stores/' + StoreUuid + '/products'
@@ -32,66 +31,54 @@ class EvotorSaver:
         return Groups
 
     def transformModel(self):
-        result=[]
+        result = []
         for good in self.model.goods:
-            result.append({"parent_id":"2137d28b-e83f-4a19-b72e-34b6972d2351", "type": "NORMAL", "name":good.name, "price":10, "cost_price":1, "quantity": 8,"measure_name":"шт", "tax":"VAT_18","allow_to_sell":True, "description":"", "article_number": good.articul, "barcodes":[good.barcode]})
+            result.append({"parent_id": "2137d28b-e83f-4a19-b72e-34b6972d2351", "type": "NORMAL", "name": good.name, "price": 10, "cost_price": 1, "quantity": 8,
+                           "measure_name": "шт", "tax": "VAT_18", "allow_to_sell": True, "description": "", "article_number": good.articul, "barcodes": [good.barcode]})
         return result
 
     def PrepareGoodGroup(self):
-        result=[]
+        result = []
         for group in self.model.goodGroups:
-            result.append({'name': group.name, 'uuid': group.evotorid, 'code': group.id, 'parentUuid': group.evotorparentid, 'group': True})
+            result.append({'name': group.name, 'uuid': group.evotorid,
+                           'code': group.id, 'parentUuid': group.evotorparentid, 'group': True})
         return result
-         
 
     def PrepareGoods(self):
-        result=[]
+        result = []
         for good in self.model.goods:
             parentid = ''
             for goodgroup in self.model.goodGroups:
                 if good.goodGroupId == goodgroup.id:
                     parentid = goodgroup.evotorid
                     break
-            result.append({'name': good.name, 'barcode': [good.barcode], 'articleNumber': good.articul, 'price': good.price, 'group': False, 'uuid': good.evotorid, 'parentUuid': parentid})
-        return result
-        
-
-
-    def transformModel(self):
-        result=[]
-        for good in self.model.goods:
-            result.append({ "parent_id": "1ddea16b-971b-dee5-3798-1b29a7aa2e27", "name":good.name, "price":10,"measure_name":"шт", "tax":"VAT_20","allow_to_sell":True, "article_number": good.articul,"code":good.articul, "barcodes":[good.barcode],"type": "ALCOHOL_NOT_MARKED"})
+            result.append({'name': good.name, 'barCodes': [good.barcode], 'articleNumber': good.articul,
+                           'price': good.price, 'group': False, 'uuid': good.evotorid, 'parentUuid': parentid})
         return result
 
     def save(self):
         self.logger.debug("Evotor api interaction...")
 
         self.headers = {
-                        'Content-type': 'application/json', 'x-authorization': self.settings[constants.apiKey] #При запросе типа post id товара присваивается автоматически при добавлении +bulk в content type ничего не работает
-                        }
+            # При запросе типа post id товара присваивается автоматически при добавлении +bulk в content type ничего не работает
+            'Content-type': 'application/json', 'x-authorization': self.settings[constants.apiKey]
+        }
         StoreUuid = self.get_store_uuid()
-        # self.logger.debug("Got store uuid:"+StoreUuid)
-        # url = "https://api.evotor.ru/stores/"+StoreUuid+"/products"
-
-        # body = self.transformModel()
-
-        # json_body=json.dumps(body)
-        # print(json_body)
-        # requestResult = requests.post(url,data=json_body, headers=self.headers)
 
         url = 'https://api.evotor.ru/api/v1/inventories/stores/'+StoreUuid+'/products'
         self.logger.debug("export goodGroups")
         body = self.PrepareGoodGroup()
-        json_body=json.dumps(body)
+        json_body = json.dumps(body)
         print(json_body)
-        requestResult = requests.post(url, data=json_body, headers=self.headers)
+        requestResult = requests.post(
+            url, data=json_body, headers=self.headers)
 
         self.logger.debug("goods export")
         body = self.PrepareGoods()
-        json_body=json.dumps(body)
+        json_body = json.dumps(body, default=str)
         print(json_body)
-        requestResult = requests.post(url, data=json_body, headers=self.headers)
-
+        requestResult = requests.post(
+            url, data=json_body, headers=self.headers)
 
         # requestParser = EvatorResultParser(requestResult)
         # res = requestParser.enreachModel(self.model.goodGroups)
@@ -127,34 +114,3 @@ class EvotorSaver:
         #         # print(response)
 
 
-
-
-
-class EvatorResultParser():
-    def __init__(self, requestResult):
-        self.requestResult = requestResult
-    def enreachModel(self, GoodGroups):
-        parcedGoodGroups = json.loads(self.requestResult.text)
-        for GoodGroup in GoodGroups:
-            for elem in parcedGoodGroups:
-                if GoodGroup.name == elem['name']:
-                    GoodGroup.evotorid = elem['id']
-                    parcedGoodGroups.remove(elem)
-        for GoodGroup in GoodGroups:
-            for elem in GoodGroups:
-                if GoodGroup.parent_id == elem.id:
-                    GoodGroup.evotorparentid = elem.evotorid
-        return GoodGroups
-
-
-
-
-
-
-
-#        json_body=json.dumps(body)
-#        
-#        print(json_body)
-
-#        requestResult = requests.post(url,data=json_body, headers=self.headers)
-#        self.logger.debug(requestResult)
