@@ -42,11 +42,17 @@ class EvotorSaver:
         for group in self.model.goodGroups:
             result.append({'name': group.name, 'uuid': group.evotorid, 'code': group.id, 'parentUuid': group.evotorparentid, 'group': True})
         return result
+         
 
-    def PrepareGoodsBody(self):
+    def PrepareGoods(self):
         result=[]
-        for good in self.model.goodGroups:
-            result.append({'name': group.name, 'parentid': group.evotorparentid})
+        for good in self.model.goods:
+            parentid = ''
+            for goodgroup in self.model.goodGroups:
+                if good.goodGroupId == goodgroup.id:
+                    parentid = goodgroup.evotorid
+                    break
+            result.append({'name': good.name, 'barcode': [good.barcode], 'articleNumber': good.articul, 'price': good.price, 'group': False, 'uuid': good.evotorid, 'parentUuid': parentid})
         return result
         
 
@@ -55,7 +61,6 @@ class EvotorSaver:
         result=[]
         for good in self.model.goods:
             result.append({ "parent_id": "1ddea16b-971b-dee5-3798-1b29a7aa2e27", "name":good.name, "price":10,"measure_name":"шт", "tax":"VAT_20","allow_to_sell":True, "article_number": good.articul,"code":good.articul, "barcodes":[good.barcode],"type": "ALCOHOL_NOT_MARKED"})
-
         return result
 
     def save(self):
@@ -75,11 +80,19 @@ class EvotorSaver:
         # requestResult = requests.post(url,data=json_body, headers=self.headers)
 
         url = 'https://api.evotor.ru/api/v1/inventories/stores/'+StoreUuid+'/products'
-
+        self.logger.debug("export goodGroups")
         body = self.PrepareGoodGroup()
         json_body=json.dumps(body)
         print(json_body)
         requestResult = requests.post(url, data=json_body, headers=self.headers)
+
+        self.logger.debug("goods export")
+        body = self.PrepareGoods()
+        json_body=json.dumps(body)
+        print(json_body)
+        requestResult = requests.post(url, data=json_body, headers=self.headers)
+
+
         # requestParser = EvatorResultParser(requestResult)
         # res = requestParser.enreachModel(self.model.goodGroups)
         # self.model.goodGroups = res
@@ -116,7 +129,6 @@ class EvotorSaver:
 
 
 
-        self.logger.debug(requestResult.json())
 
 class EvatorResultParser():
     def __init__(self, requestResult):

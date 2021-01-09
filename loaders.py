@@ -13,13 +13,14 @@ class GoodGroup:
 
 
 class Good:
-    def __init__(self, id, name, articul, barcode, goodGroupId,evotorid):
+    def __init__(self, id, name, articul, barcode, goodGroupId, evotorid, price):
         self.name = name
         self.id = id
         self.articul = articul
         self.barcode = barcode
         self.goodGroupId = goodGroupId
         self.evotorid = evotorid
+        self.price = price
 
 class Offer:
     def __init__(self, goodId, assortmentId, goodName, rest, salePrice, barcode, name1, name2):
@@ -47,12 +48,15 @@ class SamlpeGoodsModel:
         guid1 = str(uuid.uuid4())
         guid2 = str(uuid.uuid4())
         guid3 = str(uuid.uuid4())
+        guid4 = str(uuid.uuid4())
+        guid5 = str(uuid.uuid4())
+        guid6 = str(uuid.uuid4())
         self.goodGroups = [
             GoodGroup(1, "Корень", 0, guid1, None), 
             GoodGroup(2, "Молоко ", 1, guid2, guid1),
             GoodGroup(3, "Хлеб", 1, guid3, guid1)]
-        self.goods = [Good(1, "Молоко 1", "art1", "1234567890123", 2, 0), Good(
-            2, "Молоко 2", "art2", "123", 2, 0), Good(3, "Хлеб 1", "art3", "12345", 3, 0)]
+        self.goods = [Good(1, "Молоко 1", "art1", "1234567890123", 2, guid4, 100), Good(
+            2, "Молоко 2", "art2", "123", 2, guid5, 200), Good(3, "Хлеб 1", "art3", "12345", 3, guid6, 50)]
         self.offers=[Offer(20041,156144,"СОРОЧКА ALLAN NEUMANN 000722",	1,	1400.00,	"2400000040798",	"ЦВЕТ",	"АЙВОРИ"),
             Offer(20041,156144,"СОРОЧКА ALLAN NEUMANN 000722",	1,	1400.00,	"2400000040798",	"МОДЕЛЬ",	"000722"),
             Offer(20105,156157,"КОСТЮМ БРАНОФФ",	1,	999.00,	"2400000065722",	"МОДЕЛЬ",	"5505-00")]
